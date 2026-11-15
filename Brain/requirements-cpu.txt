@@ -1,0 +1,6 @@
+# ==========================================================================
+#  May KHONG co card NVIDIA: chay model detect bong bang CPU (cham hon, van dung duoc).
+# ==========================================================================
+-r requirements.txt
+
+onnxruntime==1.19.2

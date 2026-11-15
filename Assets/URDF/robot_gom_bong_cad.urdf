@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+  Robot gom bong - model CAD (SolidWorks) da chuan hoa cho Unity Digital Twin.
+  Sinh tu urdf/robot.urdf + urdf/meshes/*.STL (ban SolidWorks export bi loi khung joint:
+  axis = 0 0 0, banh lech ~0.5 m, than xe bi lap 2 lan) -> chi lay Empty_Link (than) + banhphai (banh).
+  Quy uoc ROS: x = tien, y = trai, z = len. Don vi: m.
+  base_link: tren MAT SAN, ngay duoi trung diem truc 2 banh chu dong (= tam xoay = pose ArUco/odometry).
+  Mesh OBJ da duoc dich ve he base_link, banh da can tam tai truc.
+  Tu CAD: ban kinh banh 0.0340 m, tam banh y = +-0.2312 m (firmware van dung R = 0.0325, L = 0.45).
+  Banh tu xoay co san trong mesh than xe nen khong ve them.
+-->
+<robot name="robot_gom_bong">
+  <material name="body_gray"><color rgba="0.55 0.57 0.60 1"/></material>
+  <material name="wheel_black"><color rgba="0.08 0.08 0.08 1"/></material>
+  <material name="aruco_white"><color rgba="1 1 1 1"/></material>
+  <material name="imu_blue"><color rgba="0.10 0.35 0.80 1"/></material>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes/body.obj"/></geometry>
+      <material name="body_gray"/>
+    </visual>
+  </link>
+
+  <link name="left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes/wheel.obj"/></geometry>
+      <material name="wheel_black"/>
+    </visual>
+  </link>
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel_link"/>
+    <origin xyz="0 0.2312 0.0340" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="right_wheel_link">
+    <visual>
+      <!-- cung mesh banh, xoay 180 do quanh z de mat ngoai quay ra ngoai -->
+      <origin xyz="0 0 0" rpy="0 0 3.14159265"/>
+      <geometry><mesh filename="meshes/wheel.obj"/></geometry>
+      <material name="wheel_black"/>
+    </visual>
+  </link>
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel_link"/>
+    <origin xyz="0 -0.2312 0.0340" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="imu_link">
+    <visual>
+      <geometry><box size="0.021 0.016 0.003"/></geometry>
+      <material name="imu_blue"/>
+    </visual>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Ma ArUco tren noc (noc CAD o z = 0.304), cach truc banh 17 cm ve sau -->
+  <link name="aruco_link">
+    <visual>
+      <geometry><box size="0.192 0.192 0.002"/></geometry>
+      <material name="aruco_white"/>
+    </visual>
+  </link>
+  <joint name="aruco_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="aruco_link"/>
+    <origin xyz="-0.17 0 0.305" rpy="0 0 0"/>
+  </joint>
+</robot>

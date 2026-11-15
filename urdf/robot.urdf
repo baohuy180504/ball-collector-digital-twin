@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="ud.SLDASM">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.200083282092305 -0.345577438803415 0.321995272575587"
+        rpy="0 0 0" />
+      <mass
+        value="2.46111570106431" />
+      <inertia
+        ixx="0.019518636612731"
+        ixy="-1.67365091676551E-06"
+        ixz="9.97999256701784E-08"
+        iyy="0.027158598908191"
+        iyz="3.03378644164839E-08"
+        izz="0.0164587898041536" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Empty_Link">
+    <inertial>
+      <origin
+        xyz="-0.196930205490685 0.000645001146101498 0.115489127586318"
+        rpy="0 0 0" />
+      <mass
+        value="2.39076630389986" />
+      <inertia
+        ixx="0.016428315433968"
+        ixy="9.97999666072111E-08"
+        ixz="-3.01919141661453E-08"
+        iyy="0.0194670650483305"
+        iyz="1.67365090444636E-06"
+        izz="0.0271281249801712" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/Empty_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/Empty_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint"
+    type="fixed">
+    <origin
+      xyz="0.201009603273343 -0.456707763510242 0.130408345851104"
+      rpy="1.5707963267949 1.5707963267949 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Empty_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="banhtrai">
+    <inertial>
+      <origin
+        xyz="-4.69488337095925E-11 5.99277849566704E-11 -0.434883582983331"
+        rpy="0 0 0" />
+      <mass
+        value="0.0351746985822266" />
+      <inertia
+        ixx="1.52369212433714E-05"
+        ixy="4.72650666598025E-10"
+        ixz="-2.96433597259489E-14"
+        iyy="1.52372278594696E-05"
+        iyz="2.44250957142097E-14"
+        izz="2.5785782200264E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/banhtrai.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/banhtrai.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J_L"
+    type="continuous">
+    <origin
+      xyz="-0.01 0.22227 -0.037"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="Empty_Link" />
+    <child
+      link="banhtrai" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="banhphai">
+    <inertial>
+      <origin
+        xyz="6.17497719623827E-12 -7.48026085517495E-11 -0.43158358298332"
+        rpy="0 0 0" />
+      <mass
+        value="0.0351746985822281" />
+      <inertia
+        ixx="1.52374489423172E-05"
+        ixy="3.26700798551985E-10"
+        ixz="1.12954543041834E-14"
+        iyy="1.52367001603772E-05"
+        iyz="-3.6719058920809E-14"
+        izz="2.57857822002645E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/banhphai.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ud.SLDASM/meshes/banhphai.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="J_R"
+    type="continuous">
+    <origin
+      xyz="-0.01 -0.198 -0.037"
+      rpy="1.5708 0 0" />
+    <parent
+      link="Empty_Link" />
+    <child
+      link="banhphai" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+</robot>

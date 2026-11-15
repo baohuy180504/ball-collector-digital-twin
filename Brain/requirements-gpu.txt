@@ -1,0 +1,16 @@
+# ==========================================================================
+#  May CO card NVIDIA: chay model detect bong bang GPU (CUDA 12 + cuDNN 9).
+#  Thu vien CUDA cai bang pip vao .venv -> KHONG can cai CUDA Toolkit.
+#  Chi can driver NVIDIA ho tro CUDA 12 (driver >= 528). Tai ~2 GB.
+# ==========================================================================
+-r requirements.txt
+
+onnxruntime-gpu==1.19.2           # ban cuoi cung ho tro Python 3.9
+
+nvidia-cuda-runtime-cu12==12.9.79
+nvidia-cuda-nvrtc-cu12==12.9.86
+nvidia-nvjitlink-cu12==12.9.86
+nvidia-cublas-cu12==12.9.2.10
+nvidia-cudnn-cu12==9.28.1.4
+nvidia-cufft-cu12==11.4.1.4
+nvidia-curand-cu12==10.3.10.19
