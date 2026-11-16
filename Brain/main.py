@@ -124,7 +124,7 @@ def main():
     scanner = None
     if source == "camera":
         scanner = CameraScanner()
-        scanner.start()                    # do 1 lan luc khoi dong de biet may co nhung camera nao
+        # do danh sach camera SAU khi da mo xong camera chinh (khong mo 2 camera cung luc)
     print(f"Che do: {source.upper()} | Unity: trang thai -> {C.STATE_PORT}, anh -> {C.VIDEO_PORT}, lenh <- {C.CMD_PORT}")
 
     tracker = BallTracker()
@@ -217,6 +217,8 @@ def main():
                     try:
                         cam = Camera(cam_index)
                         cam_fail = 0
+                        if not scanner.done_once and not scanner.busy:
+                            scanner.start(cam.index)       # camera dang mo -> bo qua index nay khi do
                         save_cam_index(cam_index)          # chi luu khi camera mo duoc that
                         print(f"Da mo camera index {cam_index}")
                     except Exception as e:
@@ -224,6 +226,8 @@ def main():
                         cam = None
                         cam_fail += 1
                         # camera da chon khong con -> quay ve camera dau tien tim thay
+                        if cam_fail >= 2 and not scanner.done_once and not scanner.busy:
+                            scanner.start(-1)              # chua mo duoc camera nao: do xem may co camera nao
                         if cam_fail >= 2 and scanner.done_once and scanner.result and cam_index not in scanner.result:
                             print(f"Camera index {cam_index} khong ton tai -> dung index {scanner.result[0]}")
                             cam_index, cam_fail, cam_retry = scanner.result[0], 0, 0.0

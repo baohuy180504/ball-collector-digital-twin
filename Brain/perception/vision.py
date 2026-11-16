@@ -52,11 +52,20 @@ class Camera:
 
     def _open(self):
         for name, api in self._backends():
+            # Toan bo qua trinh mo + cai dat + doc thu nam trong CAMERA_OPEN_LOCK:
+            # mo / set camera dong thoi o 2 luong (vd luong do camera) lam DirectShow hong heap -> crash 0xc0000374
             with CAMERA_OPEN_LOCK:
-                cap = cv2.VideoCapture(self.index, api)
-            if not cap.isOpened():
-                cap.release()
-                continue
+                cap = self._try_open(name, api)
+            if cap is not None:
+                return cap
+        raise RuntimeError(f"Khong mo duoc camera index {self.index} (dang bi app khac dung, hoac sai index)")
+
+    def _try_open(self, name, api):
+        cap = cv2.VideoCapture(self.index, api)
+        if not cap.isOpened():
+            cap.release()
+            return None
+        try:
             fourcc = getattr(C, "CAMERA_FOURCC", "MJPG")
             if fourcc:
                 cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*fourcc))   # MJPG: 1280x720 @30 qua USB 2.0
@@ -66,23 +75,25 @@ class Camera:
             if fourcc:
                 cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*fourcc))   # DirectShow: dat lai sau khi doi kich thuoc
             cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-            ok = False
+            ok, f = False, None
             for _ in range(10):                      # vai khung dau thuong rong
                 ok, f = cap.read()
                 if ok:
                     break
                 time.sleep(0.05)
-            if not ok:
-                cap.release()
-                continue
-            h, w = f.shape[:2]
-            fcc = int(cap.get(cv2.CAP_PROP_FOURCC))
-            fcc_s = "".join(chr((fcc >> 8 * k) & 0xFF) for k in range(4)) if fcc > 0 else "?"
-            print(f"Camera index {self.index}: backend {name}, {w}x{h}, format {fcc_s}, fps khai bao {cap.get(cv2.CAP_PROP_FPS):.0f}")
-            if (w, h) != (C.CAMERA_WIDTH, C.CAMERA_HEIGHT):
-                print(f"CANH BAO: camera cho {w}x{h}, calib la {C.CAMERA_WIDTH}x{C.CAMERA_HEIGHT} -> toa do se sai")
-            return cap
-        raise RuntimeError(f"Khong mo duoc camera index {self.index} (dang bi app khac dung, hoac sai index)")
+        except cv2.error as e:
+            print(f"Camera index {self.index}: backend {name} loi khi cai dat ({e}) - thu cach khac")
+            ok = False
+        if not ok:
+            cap.release()
+            return None
+        h, w = f.shape[:2]
+        fcc = int(cap.get(cv2.CAP_PROP_FOURCC))
+        fcc_s = "".join(chr((fcc >> 8 * k) & 0xFF) for k in range(4)) if fcc > 0 else "?"
+        print(f"Camera index {self.index}: backend {name}, {w}x{h}, format {fcc_s}, fps khai bao {cap.get(cv2.CAP_PROP_FPS):.0f}")
+        if (w, h) != (C.CAMERA_WIDTH, C.CAMERA_HEIGHT):
+            print(f"CANH BAO: camera cho {w}x{h}, calib la {C.CAMERA_WIDTH}x{C.CAMERA_HEIGHT} -> toa do se sai")
+        return cap
 
     def _loop(self):
         stall = getattr(C, "CAMERA_STALL_S", 2.0)
