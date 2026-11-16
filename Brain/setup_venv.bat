@@ -92,7 +92,8 @@ if /i "%MODE%"=="gpu" (
     "%VPY%" -m pip uninstall -y onnxruntime-gpu >nul 2>&1
 )
 "%VPY%" -m pip install --upgrade pip --disable-pip-version-check -q
-"%VPY%" -m pip install --disable-pip-version-check -r "requirements-%MODE%.txt"
+rem --no-cache-dir: khong luu ban tai ve vao o C (pip cache ~2 GB), tiet kiem dung luong
+"%VPY%" -m pip install --disable-pip-version-check --no-cache-dir -r "requirements-%MODE%.txt"
 if errorlevel 1 (
     echo.
     echo Cai thu vien LOI - kiem tra mang Internet roi chay lai file nay.

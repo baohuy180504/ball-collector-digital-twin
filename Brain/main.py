@@ -402,6 +402,7 @@ def main():
                 "collected": collected,
                 "cmd_v": round(v, 3), "cmd_w": round(w, 3),
                 "view_deg": round(view_deg, 1), "view_ok": view_ok,
+                
             })
 
             if frame is not None and now - last_video >= 1.0 / C.VIDEO_HZ:
